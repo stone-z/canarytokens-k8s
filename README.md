@@ -1,8 +1,8 @@
 # canarytokens-k8s
 
-A [Helm](https://helm.sh/) chart for deploying [`opencanary`](https://github.com/thinkst/opencanary) from [Thinkst](https://thinkst.com/) in a Kubernetes cluster.
+A [Helm](https://helm.sh/) chart for deploying [`canarytokens`](https://github.com/thinkst/canarytokens) from [Thinkst](https://thinkst.com/) in a Kubernetes cluster.
 
-**Disclaimer:** This is an unoffical repo maintained casually and is not tested or configured for production use.
+**Disclaimer:** This is an unofficial repo maintained casually and is not tested or configured for production use.
 
 ## Usage
 
