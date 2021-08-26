@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "canarytokens-switchboard.fullname" . }}
+  labels:
+    {{- include "canarytokens-switchboard.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "canarytokens-switchboard.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "canarytokens-switchboard.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "canarytokens-switchboard.serviceAccountName" . }}
+      volumes:
+      - name: frontend-claim0
+        persistentVolumeClaim:
+          claimName: frontend-claim0
+      - name: log-volume
+        persistentVolumeClaim:
+          claimName: log-volume
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+          - bash
+          - -c
+          - rm switchboard.pid; twistd -noy switchboard.tac --pidfile=switchboard.pid
+          env:
+          - name: CANARY_ALERT_EMAIL_FROM_ADDRESS
+          - name: CANARY_ALERT_EMAIL_FROM_DISPLAY
+          - name: CANARY_ALERT_EMAIL_SUBJECT
+          - name: CANARY_PUBLIC_IP
+          - name: CANARY_TOKEN_RETURN
+            value: fortune
+          - name: CANARY_WEB_IMAGE_UPLOAD_PATH
+            value: /uploads
+          - name: ERROR_LOG_WEBHOOK
+          - name: LOG_FILE
+            value: switchboard.log
+          - name: PROTOCOL
+            value: https
+          ports:
+            - containerPort: 53
+            - containerPort: 53
+              protocol: UDP
+            - containerPort: 25
+            - containerPort: 8083
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          volumeMounts:
+          - mountPath: /uploads/
+            name: frontend-claim0
+          - mountPath: /logs
+            name: log-volume
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

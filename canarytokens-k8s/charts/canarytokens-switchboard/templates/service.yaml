@@ -1,14 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    kompose.cmd: /snap/kompose/19/kompose-linux-amd64 convert
-    kompose.version: 1.21.0 (992df58d8)
-  creationTimestamp: null
+  name: {{ include "canarytokens-switchboard.fullname" . }}
   labels:
-    io.kompose.service: switchboard
-  name: switchboard
+    {{- include "canarytokens-switchboard.labels" . | nindent 4 }}
 spec:
+  type: {{ .Values.service.type }}
   ports:
   - name: "53"
     port: 53
@@ -24,6 +21,4 @@ spec:
     port: 8083
     targetPort: 8083
   selector:
-    io.kompose.service: switchboard
-status:
-  loadBalancer: {}
+    {{- include "canarytokens-switchboard.selectorLabels" . | nindent 4 }}
