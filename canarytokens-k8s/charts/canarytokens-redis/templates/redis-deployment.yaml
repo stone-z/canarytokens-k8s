@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  labels:
+    {{- include "canarytokens-redis.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "canarytokens-redis.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        {{- include "canarytokens-redis.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - args:
+        - redis-server
+        - "--appendonly"
+        - "yes"
+        - --protected-mode
+        - "no"
+        - --save
+        - "60"
+        - "1"
+        image: redis
+        imagePullPolicy: ""
+        name: redis
+        resources: {}
+        ports:
+        - containerPort: 6379
+        volumeMounts:
+        - mountPath: /data/
+          name: redis-claim0
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+      - name: redis-claim0
+        persistentVolumeClaim:
+          claimName: redis-claim0
+status: {}

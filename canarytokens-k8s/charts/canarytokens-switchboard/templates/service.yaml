@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "canarytokens-switchboard.fullname" . }}
+  labels:
+    {{- include "canarytokens-switchboard.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+  - name: "53"
+    port: 53
+    targetPort: 53
+  - name: 53-udp
+    port: 53
+    protocol: UDP
+    targetPort: 53
+  - name: "25"
+    port: 25
+    targetPort: 25
+  - name: "8083"
+    port: 8083
+    targetPort: 8083
+  selector:
+    {{- include "canarytokens-switchboard.selectorLabels" . | nindent 4 }}

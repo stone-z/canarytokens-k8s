@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  labels:
+    {{- include "canarytokens-nginx.labels" . | nindent 4 }}
+spec:
+  ports:
+  - name: "80"
+    port: 80
+    targetPort: 80
+  selector:
+    {{- include "canarytokens-nginx.selectorLabels" . | nindent 4 }}
+status:
+  loadBalancer: {}

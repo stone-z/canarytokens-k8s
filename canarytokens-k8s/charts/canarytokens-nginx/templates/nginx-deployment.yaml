@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  labels:
+    {{- include "canarytokens-nginx.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "canarytokens-nginx.selectorLabels" . | nindent 6 }}
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        {{- include "canarytokens-nginx.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - args:
+        - /usr/sbin/nginx
+        - -c
+        - /etc/nginx/nginx.conf
+        - -g
+        - daemon off;
+        image: thinkst/canarytokens_nginx
+        imagePullPolicy: ""
+        name: nginx
+        ports:
+        - containerPort: 80
+        resources: {}
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes: null
+status: {}

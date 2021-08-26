@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    {{- include "canarytokens-frontend.labels" . | nindent 4 }}
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "canarytokens-frontend.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        {{- include "canarytokens-frontend.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - args:
+        - bash
+        - -c
+        - rm frontend.pid; twistd -noy frontend.tac --pidfile=frontend.pid
+        env:
+        - name: CANARY_DOMAINS
+          value: localhost
+        - name: CANARY_MAX_UPLOAD_SIZE
+          value: "10485760"
+        - name: CANARY_NXDOMAINS
+          value: yourdomain.com
+        - name: CANARY_WEB_IMAGE_UPLOAD_PATH
+          value: /uploads
+        - name: LOG_FILE
+          value: frontend.log
+        image: thinkst/canarytokens
+        imagePullPolicy: ""
+        name: frontend
+        resources: {}
+        ports:
+        - containerPort: 8082
+        volumeMounts:
+        - mountPath: /uploads/
+          name: frontend-claim0
+        - mountPath: /logs
+          name: log-volume
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+      - name: frontend-claim0
+        persistentVolumeClaim:
+          claimName: frontend-claim0
+      - name: log-volume
+        persistentVolumeClaim:
+          claimName: log-volume
+status: {}
