@@ -21,7 +21,7 @@ spec:
       - args:
         - bash
         - -c
-        - rm frontend.pid; twistd -noy frontend.tac --pidfile=frontend.pid
+        - cd frontend; rm -f frontend.pid; twistd -noy frontend.tac --pidfile=frontend.pid
         env:
         - name: CANARY_DOMAINS
           value: localhost
