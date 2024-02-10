@@ -24,13 +24,25 @@ spec:
         - cd frontend; poetry run python -m uvicorn app:app --host 0.0.0.0 --port 8082
         env:
         - name: CANARY_DOMAINS
-          value: localhost
+          value: "{{ .Values.env.CANARY_DOMAINS }}"
         - name: CANARY_MAX_UPLOAD_SIZE
           value: "10485760"
         - name: CANARY_NXDOMAINS
-          value: yourdomain.com
+          value: "{{ .Values.env.CANARY_NXDOMAINS }}"
+        - name: CANARY_PUBLIC_IP
+          value: "{{ .Values.env.CANARY_PUBLIC_IP }}"
         - name: CANARY_WEB_IMAGE_UPLOAD_PATH
           value: /uploads
+        - name: CANARY_PUBLIC_DOMAIN
+          value: "{{ .Values.env.CANARY_PUBLIC_DOMAIN }}"
+        - name: CANARY_WG_PRIVATE_KEY_SEED
+          value: "{{ .Values.env.CANARY_WG_PRIVATE_KEY_SEED }}"
+        - name: CANARY_ALERT_EMAIL_FROM_ADDRESS
+          value: "{{ .Values.env.CANARY_ALERT_EMAIL_FROM_ADDRESS }}"
+        - name: CANARY_ALERT_EMAIL_FROM_DISPLAY
+          value: "{{ .Values.env.CANARY_ALERT_EMAIL_FROM_DISPLAY }}"
+        - name: CANARY_ALERT_EMAIL_SUBJECT
+          value: "{{ .Values.env.CANARY_ALERT_EMAIL_SUBJECT }}"
         - name: LOG_FILE
           value: frontend.log
         image: thinkst/canarytokens
