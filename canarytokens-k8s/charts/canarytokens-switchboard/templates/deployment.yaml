@@ -43,7 +43,7 @@ spec:
           args:
           - bash
           - -c
-          - rm switchboard.pid; twistd -noy switchboard.tac --pidfile=switchboard.pid
+          - cd switchboard; rm -f switchboard.pid; twistd -noy switchboard.tac --pidfile=switchboard.pid
           env:
           - name: CANARY_PUBLIC_DOMAIN
             value: "{{ .Values.env.CANARY_PUBLIC_DOMAIN }}"
