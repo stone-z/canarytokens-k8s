@@ -64,6 +64,8 @@ spec:
               protocol: UDP
             - containerPort: 25
             - containerPort: 8083
+            - containerPort: 3306
+            - containerPort: 6443
           livenessProbe:
             httpGet:
               path: /
