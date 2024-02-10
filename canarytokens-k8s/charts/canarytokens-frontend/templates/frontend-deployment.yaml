@@ -21,7 +21,7 @@ spec:
       - args:
         - bash
         - -c
-        - cd frontend; rm -f frontend.pid; twistd -noy frontend.tac --pidfile=frontend.pid
+        - cd frontend; poetry run python -m uvicorn app:app --host 0.0.0.0 --port 8082
         env:
         - name: CANARY_DOMAINS
           value: localhost
