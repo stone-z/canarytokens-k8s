@@ -76,4 +76,6 @@ nodeSelector: {}
 
 tolerations: []
 
+storageClassName:
+
 affinity: {}

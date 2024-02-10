@@ -3,6 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: log-volume
 spec:
+  storageClassName: "{{ .Values.storageClassName }}"
   accessModes:
   - ReadWriteOnce
   resources:
