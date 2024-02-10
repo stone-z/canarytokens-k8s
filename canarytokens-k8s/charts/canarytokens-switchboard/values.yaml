@@ -77,3 +77,7 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+env:
+  CANARY_PUBLIC_DOMAIN: localdomain
+  CANARY_WG_PRIVATE_KEY_SEED: 0000000000000000000000000000000000000000000=

@@ -45,6 +45,10 @@ spec:
           - -c
           - rm switchboard.pid; twistd -noy switchboard.tac --pidfile=switchboard.pid
           env:
+          - name: CANARY_PUBLIC_DOMAIN
+            value: "{{ .Values.env.CANARY_PUBLIC_DOMAIN }}"
+          - name: CANARY_WG_PRIVATE_KEY_SEED
+            value: "{{ .Values.env.CANARY_WG_PRIVATE_KEY_SEED }}"
           - name: CANARY_ALERT_EMAIL_FROM_ADDRESS
           - name: CANARY_ALERT_EMAIL_FROM_DISPLAY
           - name: CANARY_ALERT_EMAIL_SUBJECT
