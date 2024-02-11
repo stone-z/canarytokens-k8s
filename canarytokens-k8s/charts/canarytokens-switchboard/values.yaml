@@ -77,3 +77,12 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+env:
+  CANARY_DOMAINS: localdomain
+  CANARY_NXDOMAINS: localdomain
+  CANARY_PUBLIC_DOMAIN: localdomain
+  CANARY_WG_PRIVATE_KEY_SEED: 0000000000000000000000000000000000000000000=
+  CANARY_ALERT_EMAIL_FROM_ADDRESS: youraddress@localdomain
+  CANARY_ALERT_EMAIL_FROM_DISPLAY: Canarytoken Mailer
+  CANARY_ALERT_EMAIL_SUBJECT: Alert from Canarytoken

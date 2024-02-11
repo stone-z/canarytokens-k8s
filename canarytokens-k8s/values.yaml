@@ -74,6 +74,12 @@ autoscaling:
 
 nodeSelector: {}
 
+storageClassName:
+
 tolerations: []
 
 affinity: {}
+
+canarytokens-redis:
+  service:
+    port: 6379

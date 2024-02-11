@@ -6,6 +6,7 @@ metadata:
     io.kompose.service: frontend-claim0
   name: frontend-claim0
 spec:
+  storageClassName: "{{ .Values.storageClassName }}"
   accessModes:
   - ReadWriteOnce
   resources:
