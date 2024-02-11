@@ -43,11 +43,28 @@ spec:
           args:
           - bash
           - -c
-          - rm switchboard.pid; twistd -noy switchboard.tac --pidfile=switchboard.pid
+          - cd switchboard; rm -f switchboard.pid; poetry run twistd -noy switchboard.tac --pidfile=switchboard.pid
           env:
+          - name: CANARY_DOMAINS
+            value: "{{ .Values.env.CANARY_DOMAINS }}"
+          - name: CANARY_NXDOMAINS
+            value: "{{ .Values.env.CANARY_NXDOMAINS }}"
+          - name: CANARY_PUBLIC_IP
+            value: "{{ .Values.env.CANARY_PUBLIC_IP }}"
+          - name: CANARY_PUBLIC_DOMAIN
+            value: "{{ .Values.env.CANARY_PUBLIC_DOMAIN }}"
+          - name: CANARY_REDIS_PORT
+            value: "6379"
+          - name: CANARY_REDIS_HOST
+            value: "{{ .Values.env.REDIS_HOST }}"
+          - name: CANARY_WG_PRIVATE_KEY_SEED
+            value: "{{ .Values.env.CANARY_WG_PRIVATE_KEY_SEED }}"
           - name: CANARY_ALERT_EMAIL_FROM_ADDRESS
+            value: "{{ .Values.env.CANARY_ALERT_EMAIL_FROM_ADDRESS }}"
           - name: CANARY_ALERT_EMAIL_FROM_DISPLAY
+            value: "{{ .Values.env.CANARY_ALERT_EMAIL_FROM_DISPLAY }}"
           - name: CANARY_ALERT_EMAIL_SUBJECT
+            value: "{{ .Values.env.CANARY_ALERT_EMAIL_SUBJECT }}"
           - name: CANARY_PUBLIC_IP
           - name: CANARY_TOKEN_RETURN
             value: fortune
@@ -64,6 +81,8 @@ spec:
               protocol: UDP
             - containerPort: 25
             - containerPort: 8083
+            - containerPort: 3306
+            - containerPort: 6443
           livenessProbe:
             httpGet:
               path: /

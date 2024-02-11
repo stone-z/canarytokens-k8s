@@ -38,7 +38,8 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 80
+  name: redis
+  port: 6379
 
 ingress:
   enabled: false
@@ -75,5 +76,7 @@ autoscaling:
 nodeSelector: {}
 
 tolerations: []
+
+storageClassName:
 
 affinity: {}

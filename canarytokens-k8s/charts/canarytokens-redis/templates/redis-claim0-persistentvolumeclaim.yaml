@@ -4,6 +4,7 @@ metadata:
   creationTimestamp: null
   name: redis-claim0
 spec:
+  storageClassName: "{{ .Values.storageClassName }}"
   accessModes:
   - ReadWriteOnce
   resources:
